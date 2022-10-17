@@ -4,17 +4,16 @@ import "./App.css"
 export const App = () => {
 
   const [cardList, setCardList] = useState([
-    {id: 1, order: 3, text: "КАРТОЧКА 3"},
-    {id: 2, order: 1, text: "КАРТОЧКА 1"},
-    {id: 3, order: 2, text: "КАРТОЧКА 2"},
-    {id: 4, order: 4, text: "КАРТОЧКА 4"},
+    {id: 1, order: 1, text: "Card 1"},
+    {id: 2, order: 2, text: "Card 2"},
+    {id: 3, order: 3, text: "Card 3"},
+    {id: 4, order: 4, text: "Card 4"},
 
   ])
 
   const [currentCard, setCurrentCard] = useState(null)
 
   const dragStartHandler = (card) => {
-    console.log("drag", card);
     setCurrentCard(card)
   }
 
@@ -24,10 +23,10 @@ export const App = () => {
 
   const dragOverHandler = (event) => {
     event.preventDefault()
-    event.target.style.background = "yellow"
+    event.target.style.background = "linear-gradient(90deg, #84fab0 0%, #8fd3f4 100%)"
   }
 
-  const droptHandler = (event, card) => {
+  const dropHandler = (event, card) => {
     event.preventDefault()
     setCardList(cardList.map(c => {
       if (c.id === card.id) {
@@ -54,11 +53,11 @@ export const App = () => {
     <div className="app">
       {cardList.sort(sortCards).map(card => 
         <div className="card" draggable={true}
-        onDragStart={(event) => dragStartHandler(card)} // Срабатывает, когда берем карточку
-        onDragLeave={(event) => dragEndHandler(event)} // Срабатывает, если вышли за пределы другой карточки
-        onDragEnd={(event) => dragEndHandler(event)} // Если отпустили перемещение карточки
-        onDragOver={(event) => dragOverHandler(event)} // Если находимся над другим объектом
-        onDrop={(event) => droptHandler(event, card)} // Если отпустили карточку и ждем какое-то связанное с этим действие
+        onDragStart={() => dragStartHandler(card)}
+        onDragLeave={(event) => dragEndHandler(event)}
+        onDragEnd={(event) => dragEndHandler(event)}
+        onDragOver={(event) => dragOverHandler(event)}
+        onDrop={(event) => dropHandler(event, card)}
         >
           {card.text}
         </div>)}
